@@ -26,10 +26,16 @@ namespace UpFront.Events
                 throw new SynchronizationLockException();
             }
 
-            if(this.observers.Count > 0)
+            lock(this.observers)
             {
-                this.invocations.AddRange(this.observers);
-            }         
+                if (this.observers.Count > 0)
+                {
+                    for (int i = 0; i < this.observers.Count; i++)
+                    {
+                        this.invocations.Add(this.observers[i]);
+                    }
+                }
+            }    
         }
 
         protected void ClearInvocations()
@@ -42,57 +48,87 @@ namespace UpFront.Events
             this.invocations.Clear();
         }
 
-        public void Subscribe(T observer) => this.observers.Add(observer);
+        public void Subscribe(T observer)
+        {
+            lock(this.observers)
+            {
+                this.observers.Add(observer);
+            }
+        }
         
         public bool IsSubscribed(T observer)
         {
-            for(int i = 0; i < this.observers.Count; i++)
+            lock (this.observers)
             {
-                if(this.observers[i] == observer)
+                for (int i = 0; i < this.observers.Count; i++)
                 {
-                    return true;
+                    if (this.observers[i] == observer)
+                    {
+                        return true;
+                    }
                 }
+                return false;
             }
-            return false;
         }
 
-        public bool HasSubscribers() => this.observers.Count > 0;
+        public bool HasSubscribers()
+        {
+            lock(this.observers)
+            {
+               return this.observers.Count > 0;
+            }
+        }
 
         public void Unsubscribe(T observer)
         {
-            for (int i = 0; i < this.observers.Count; i++)
+            lock (this.observers)
             {
-                if (this.observers[i] == observer)
+                for (int i = 0; i < this.observers.Count; i++)
                 {
-                    this.observers.RemoveAt(i);
-                    break;
+                    if (this.observers[i] == observer)
+                    {
+                        this.observers.RemoveAt(i);
+                        break;
+                    }
                 }
             }
         }
 
         public void UnsubscribeLast(T observer)
         {
-            for (int i = this.observers.Count - 1; i >= 0; i--)
+            lock (this.observers)
             {
-                if (this.observers[i] == observer)
+                for (int i = this.observers.Count - 1; i >= 0; i--)
                 {
-                    this.observers.RemoveAt(i);
-                    break;
+                    if (this.observers[i] == observer)
+                    {
+                        this.observers.RemoveAt(i);
+                        break;
+                    }
                 }
             }
         }
 
         public void UnsubscribeAll(T observer)
         {
-            for (int i = this.observers.Count - 1; i >= 0; i--)
+            lock(this.observers)
             {
-                if (this.observers[i] == observer)
+                for (int i = this.observers.Count - 1; i >= 0; i--)
                 {
-                    this.observers.RemoveAt(i);
+                    if (this.observers[i] == observer)
+                    {
+                        this.observers.RemoveAt(i);
+                    }
                 }
             }
         }
 
-        public void ClearSubscribers() => this.observers.Clear();     
+        public void ClearSubscribers()
+        {
+            lock(this.observers)
+            {
+                this.observers.Clear();
+            }
+        }
     }
 }
