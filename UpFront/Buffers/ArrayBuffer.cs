@@ -124,5 +124,10 @@ namespace UpFront.Buffers
         public T[] GetArray() => this.buffer;
 
         public ref T GetReference() => ref this.buffer[0];
+
+#if NETSTANDARD2_1
+        public Span<T> GetSpan() => new Span<T>(this.buffer, 0, this.Length);
+#endif
+
     }  
 }

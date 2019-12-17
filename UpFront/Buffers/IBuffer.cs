@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace UpFront.Buffers
 {
     /// <summary>
@@ -62,6 +63,16 @@ namespace UpFront.Buffers
         /// Gets reference to the underlying buffer
         /// </summary>
         ref T GetReference();
+
+#if NETSTANDARD2_1
+
+        /// <summary>
+        /// Gets a span containing whats been written to the buffer
+        /// </summary>
+        Span<T> GetSpan();
+
+#endif
+
     }
 
     public static class IBufferExtensions
