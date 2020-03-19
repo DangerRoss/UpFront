@@ -17,12 +17,12 @@ namespace UpFront.Events
             lock(this)
             {
                 this.PrepareInvocation();
+                this.ClearSubscribers();
                 for (int i = 0; i < this.invocations.Count; i++)
                 {
                     this.invocations[i]();
                 }
                 this.ClearInvocations();
-                this.ClearSubscribers();
             }
         }
 
