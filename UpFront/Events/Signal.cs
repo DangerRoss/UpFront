@@ -58,12 +58,12 @@ namespace UpFront.Events
             lock(this)
             {
                 this.PrepareInvocation();
+                this.ClearSubscribers();
                 for (int i = 0; i < this.invocations.Count; i++)
                 {
                     this.invocations[i](arg);
                 }
                 this.ClearInvocations();
-                this.ClearSubscribers();
             }
         }
 
@@ -101,12 +101,12 @@ namespace UpFront.Events
             lock(this)
             {
                 this.PrepareInvocation();
+                this.ClearSubscribers();
                 for (int i = 0; i < this.invocations.Count; i++)
                 {
                     this.invocations[i](arg1, arg2);
                 }
                 this.ClearInvocations();
-                this.ClearSubscribers();
             }
         }
 
@@ -144,12 +144,12 @@ namespace UpFront.Events
             lock(this)
             {
                 this.PrepareInvocation();
+                this.ClearSubscribers();
                 for (int i = 0; i < this.invocations.Count; i++)
                 {
                     this.invocations[i](arg1, arg2, arg3);
                 }
                 this.ClearInvocations();
-                this.ClearSubscribers();
             }
         }
 
@@ -187,12 +187,12 @@ namespace UpFront.Events
             lock(this)
             {
                 this.PrepareInvocation();
+                this.ClearSubscribers();
                 for (int i = 0; i < this.invocations.Count; i++)
                 {
                     this.invocations[i](arg1, arg2, arg3, arg4);
                 }
                 this.ClearInvocations();
-                this.ClearSubscribers();
             }
         }
 
