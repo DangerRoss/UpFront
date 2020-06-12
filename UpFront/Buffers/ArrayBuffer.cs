@@ -45,7 +45,7 @@ namespace UpFront.Buffers
 
         public void Compact()
         {
-            var l = this.Length;
+            int l = this.Length;
 
             if (this.Capacity > l)
             {
@@ -107,6 +107,23 @@ namespace UpFront.Buffers
         {
             this.Reserve(length);
             this.Append(values, offset, length);
+        }
+
+        public unsafe void Write(T* values, int offset, int length)
+        {
+            this.Reserve(length);
+
+            fixed(T* bufferptr = this.buffer)
+            {
+                T* cursor = bufferptr + this.usagebound;
+
+                T* valuesStart = values + offset;
+
+                int lengthInBytes = sizeof(T) * length;
+
+                Buffer.MemoryCopy(valuesStart, cursor, lengthInBytes, lengthInBytes);
+            }
+            this.usagebound += length;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

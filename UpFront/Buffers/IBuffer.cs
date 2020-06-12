@@ -58,6 +58,8 @@ namespace UpFront.Buffers
         void Write(T[] values);
         void Write(T[] values, int offset, int length);
 
+        unsafe void Write(T* values, int offset, int length);
+
 
         /// <summary>
         /// Gets reference to the underlying buffer

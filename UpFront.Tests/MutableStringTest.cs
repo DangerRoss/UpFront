@@ -11,13 +11,13 @@ namespace UpFront.Tests
         [TestMethod]
         public void WriteString()
         {
-            string expected = "Hello W0rld!";
-            var l = expected.Length;
+            var expected = "Hello W0rld!";
+            int l = expected.Length;
 
             var mstring = new MutableString();
             mstring.Write(expected);
 
-            string result = (string)mstring;
+            var result = (string)mstring;
             Assert.IsTrue(expected.Equals(result));
         }
 
@@ -29,7 +29,7 @@ namespace UpFront.Tests
             var mstring = new MutableString();
             mstring.WriteInt(0);
 
-            string result = (string)mstring;
+            var result = (string)mstring;
             Assert.IsTrue(expected.Equals(result));
         }
 
@@ -41,7 +41,29 @@ namespace UpFront.Tests
             var mstring = new MutableString();
             mstring.WriteInt(int.MinValue);
 
-            string result = (string)mstring;
+            var result = (string)mstring;
+            Assert.IsTrue(expected.Equals(result));
+        }
+
+        [TestMethod]
+        public void WritePointer()
+        {
+            var expected = "Hello World";
+
+            int spaceIndex = expected.IndexOf(' ');
+
+            var mstring = new MutableString(2);
+
+            unsafe
+            {
+                fixed (char* expectedptr = expected)
+                {
+                    mstring.Write(expectedptr, 0, spaceIndex);
+
+                    mstring.Write(expectedptr, spaceIndex, expected.Length - spaceIndex);
+                }
+            }
+            var result = (string)mstring;
             Assert.IsTrue(expected.Equals(result));
         }
 
