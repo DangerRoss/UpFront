@@ -143,7 +143,23 @@ namespace UpFront.Buffers
         public ref T GetReference() => ref this.buffer[0];
 
 #if NETSTANDARD2_1
+
+        public void Write(ReadOnlySpan<T> span)
+        {
+            if(!span.IsEmpty)
+            {
+                unsafe
+                {
+                    fixed (T* spanptr = span)
+                    {
+                        this.Write(spanptr, 0, span.Length);
+                    }
+                }
+            }
+        }
+
         public Span<T> GetSpan() => new Span<T>(this.buffer, 0, this.Length);
+
 #endif
 
     }  

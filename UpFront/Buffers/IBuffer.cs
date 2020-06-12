@@ -68,6 +68,8 @@ namespace UpFront.Buffers
 
 #if NETSTANDARD2_1
 
+        void Write(ReadOnlySpan<T> span);
+
         /// <summary>
         /// Gets a span containing whats been written to the buffer
         /// </summary>
