@@ -17,10 +17,12 @@ namespace UpFront
 
         public void Write(string s)
         {
-            this.Reserve(s.Length);
-            for (int i = 0; i < s.Length; i++)
+            unsafe
             {
-                this.buffer[this.usagebound++] = s[i];
+                fixed(char* sptr = s)
+                {
+                    this.Write(sptr, 0, s.Length);
+                }
             }
         }
 
