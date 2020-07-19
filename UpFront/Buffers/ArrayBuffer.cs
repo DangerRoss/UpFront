@@ -85,7 +85,7 @@ namespace UpFront.Buffers
             int count = this.Length;
             if (count > 0)
             {
-                T[] values = new T[count];
+                var values = new T[count];
                 Array.Copy(this.buffer, 0, values, 0, count);
                 return values;
             }
@@ -127,15 +127,12 @@ namespace UpFront.Buffers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected void Append(T value) { this.buffer[this.usagebound++] = value; }
+        protected void Append(T value) => this.buffer[this.usagebound++] = value;
 
         protected void Append(T[] values, int offset, int length)
         {
-            int upperArgbound = offset + length;
-            for (int i = offset; i < upperArgbound; i++)
-            {
-                this.buffer[this.usagebound++] = values[i];
-            }
+            Array.Copy(values, offset, this.buffer, this.usagebound, length);
+            this.usagebound += length;
         }
 
         public T[] GetArray() => this.buffer;

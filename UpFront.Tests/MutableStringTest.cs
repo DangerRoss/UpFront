@@ -22,6 +22,22 @@ namespace UpFront.Tests
         }
 
         [TestMethod]
+        public void WriteCharArray()
+        {
+            var hello = "hello";
+            var world = "world";
+
+            var expected = hello + world;
+
+            var mstring = new MutableString();
+            mstring.Write(hello.ToCharArray());
+            mstring.Write(world.ToCharArray());
+
+            var result = (string)mstring;
+            Assert.IsTrue(expected.Equals(result));
+        }
+
+        [TestMethod]
         public void WriteInt()
         {
             string expected = "0";
